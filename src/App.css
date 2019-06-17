@@ -1,0 +1,18 @@
+.App {
+}
+.title-app{
+  text-align: center;
+}
+
+.form-search{
+  display: flex;
+}
+.form-search>input[name="searchword"]{
+  border-radius: .25rem 0 0 .25rem
+}
+.form-search>button{
+  border-radius: 0 .25rem .25rem 0
+}
+.App table tr td .badge{
+  cursor: pointer;
+}

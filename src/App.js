@@ -14,7 +14,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keyword: '',
       softBy: 'name',
       softValue: 1
     }
@@ -33,64 +32,9 @@ class App extends Component {
       status: false
     });
   }
-  //Search
-  onSearch = (keyword) => {
-    if(keyword){
-      this.setState({
-        keyword
-      });
-    }
-
-  }
-  //Soft
-  onSoft = (softBy, softValue) => {
-    this.setState({
-          softBy: softBy,
-          softValue: softValue
-    });
-  }
 
   render() {
-    var { 
-      softBy, 
-      softValue 
-    } = this.state;
-
     var { isDisplayForm } = this.props;
-
-    // if(keyword){
-    //   tasks = tasks.filter(task => {
-    //     return task.namework.toLowerCase().indexOf(keyword) !== -1
-    //   });
-    // }
-    //Soft
-    // if(softBy === 'name'){
-    //   tasks = tasks.sort((a, b) => {
-    //     var nameA = a.namework.toUpperCase(); // bỏ qua hoa thường
-    //     var nameB = b.namework.toUpperCase(); // bỏ qua hoa thường
-    //     if (nameA < nameB) {
-    //       return -softValue;
-    //     }
-    //     if (nameA > nameB) {
-    //       return softValue  ;
-    //     }
-    //     // name trùng nhau
-    //     return 0;
-    //   });
-    // }else{
-    //   tasks = tasks.sort((a, b) => {
-    //     var nameA = a.status;
-    //     var nameB = b.status; 
-    //     if (nameA < nameB) {
-    //       return softValue;
-    //     }
-    //     if (nameA > nameB) {
-    //       return -softValue  ;
-    //     }
-    //     // name trùng nhau
-    //     return 0;
-    //   });
-    // }
     return (
       <div className="App">
         <Alert color="primary">
@@ -105,12 +49,7 @@ class App extends Component {
               <Col md="12" className="p-0 mb-2">
                 <Button color="primary" onClick={ this.onToggleForm }>Thêm công việc</Button>
               </Col>
-              <Control 
-                onSearch={this.onSearch}
-                onSoft={this.onSoft}
-                softBy={softBy}
-                softValue={softValue}
-              />
+              <Control/>
               <TaskList />
             </Col>
           </Row>

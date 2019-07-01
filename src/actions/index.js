@@ -58,3 +58,17 @@ export const filterTasks = (filterObj) => {
         filterObj
     }
 }
+
+export const searchTasks = (keyword) => {
+    return {
+        type: types.SEARCH,
+        keyword
+    }
+}
+
+export const sortTasks = (sortObj) => {
+    return {
+        type: types.SORT,
+        sortObj
+    }
+}

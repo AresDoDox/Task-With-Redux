@@ -4,6 +4,9 @@ import {
   FormGroup, Label, Input, Button
 } from 'reactstrap';
 
+import { connect } from 'react-redux';
+import * as actions from './../actions';
+
 class Search extends Component {
   constructor(props){
     super(props);
@@ -43,4 +46,12 @@ class Search extends Component {
   }
 }
 
-export default Search;
+let mapDispatchToProps = (dispatch,action) => {
+  return {
+    onSearch: (keyword) => {
+      dispatch(actions.searchTasks(keyword));
+    }
+  };
+};
+
+export default connect(null,mapDispatchToProps)(Search);

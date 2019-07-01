@@ -4,6 +4,9 @@ import {
   ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 
+import { connect } from 'react-redux';
+import * as actions from './../actions';
+
 class Sort extends Component {
   constructor(props) {
     super(props);
@@ -14,19 +17,18 @@ class Sort extends Component {
     };
   }
 
-
-  // componentWillReceiveProps(nextProps){
-  //   console.log(nextProps);
-  // }
-
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
     });
   }
 
-  onClick = (softBy, softValue)=>{
-    this.props.onSoft(softBy, softValue);
+  onClick = (sortBy, sortValue)=>{
+    let sortObj = {
+      sortBy,
+      sortValue
+    }
+    this.props.onSort(sortObj);
   }
 
 
@@ -48,4 +50,12 @@ class Sort extends Component {
   }
 }
 
-export default Sort;
+let mapDispatchToProps = (dispatch,action) => {
+  return {
+    onSort: (sortObj) => {
+      dispatch(actions.sortTasks(sortObj));
+    }
+  };
+};
+
+export default connect(null,mapDispatchToProps)(Sort);

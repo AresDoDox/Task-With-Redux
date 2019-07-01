@@ -31,7 +31,7 @@ class TaskList extends Component {
     }
 
     render() {
-        var { tasks, filterTasks } = this.props;
+        var { tasks, filterTasks, keyword, sort } = this.props;
         let { filterName, filterStatus } = this.state;
         //Filter Tasks
         if (filterTasks && filterTasks.name) {
@@ -46,6 +46,40 @@ class TaskList extends Component {
                 return task.status === (filterTasks.status === 1 ? true : false)
             }
         });
+        // Search Tasks
+        if (keyword) {
+            tasks = tasks.filter(task => {
+                return task.name.toLowerCase().indexOf(keyword) !== -1
+            });
+        }
+        //sort.sort
+        if(sort.sortBy === 'name'){
+            tasks = tasks.sort((a, b) => {
+                var nameA = a.name.toUpperCase(); // bỏ qua hoa thường
+                var nameB = b.name.toUpperCase(); // bỏ qua hoa thường
+                if (nameA < nameB) {
+                    return -sort.sortValue;
+                }
+                if (nameA > nameB) {
+                    return sort.sortValue  ;
+                }
+                // name trùng nhau
+                return 0;
+            });
+            }else{
+            tasks = tasks.sort((a, b) => {
+                var nameA = a.status;
+                var nameB = b.status; 
+                if (nameA < nameB) {
+                    return sort.sortValue;
+                }
+                if (nameA > nameB) {
+                    return -sort.sortValue  ;
+                }
+                // name trùng nhau
+                return 0;
+            });
+        }
         //Task Items
         let elementTask = tasks.map((task, index)=>{
             return <TaskItem 
@@ -106,7 +140,9 @@ class TaskList extends Component {
 const mapStateToProps = (state) => {
     return {
         tasks: state.tasks,
-        filterTasks: state.filterTasks
+        filterTasks: state.filterTasks,
+        keyword: state.search,
+        sort: state.sort
     }
 };
 

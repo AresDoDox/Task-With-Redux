@@ -12,10 +12,10 @@ class Control extends Component {
     return (
       <Row>
         <Col md="5">
-          <Search onSearch={this.props.onSearch}/>
+          <Search/>
         </Col>
         <Col md="2">
-          <Sort onSoft={this.props.onSoft} softBy={this.props.softBy} softValue={this.props.softValue} />  
+          <Sort/>  
         </Col>
       </Row>
     );

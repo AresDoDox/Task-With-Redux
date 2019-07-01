@@ -3,6 +3,8 @@ import tasks from './tasks';
 import isDisplayForm from './isDisplayForm';
 import task from './task';
 import filterTasks from './filterTasks';
+import search from './search';
+import sort from './sort'
 
 //import combine
 import { combineReducers } from 'redux';
@@ -13,7 +15,9 @@ const myReducers = combineReducers({
     tasks,
     isDisplayForm,
     task,
-    filterTasks
+    filterTasks,
+    search,
+    sort
 });
 
 export default myReducers;

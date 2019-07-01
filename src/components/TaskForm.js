@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from './../actions';
 
 import {
   Card, CardHeader, CardBody, CardFooter,
@@ -10,8 +12,8 @@ class TaskForm extends Component {
     super(props);
     this.state = {
       id: '',
-      namework:'',
-      statuswork: false
+      name:'',
+      status: false
     }
   }
 
@@ -19,8 +21,8 @@ class TaskForm extends Component {
     if(this.props.task){
       this.setState({
         id: this.props.task.id,
-        namework: this.props.task.namework,
-        statuswork: this.props.task.status
+        name: this.props.task.name,
+        status: this.props.task.status
       });
     }
   }
@@ -29,24 +31,27 @@ class TaskForm extends Component {
     if(nextProps && nextProps.task){
       this.setState({
         id: nextProps.task.id,
-        namework: nextProps.task.namework,
-        statuswork: nextProps.task.status
+        name: nextProps.task.name,
+        status: nextProps.task.status
       });
+    }else{
+      this.onClear();
     }
-    if(nextProps && nextProps.task === null){
-      this.setState({
-        id: '',
-        namework: '',
-        statuswork: false
-      });
-    }
+  }
+
+  onClear = () =>{
+    this.setState({
+      id: '',
+      name: '',
+      status: false
+    });
   }
 
   onChangeForm = (event) => {
     let target = event.target;
     let name = target.name;
     let value = target.value;
-    if(name === 'statuswork'){
+    if(name === 'status'){
       value = value ? true : false;
     }
     this.setState({
@@ -54,49 +59,46 @@ class TaskForm extends Component {
     });
   }
 
-  onCloseForm = () => {
-    this.props.onCloseForm();
-  }
-
-  onSubmit = (event) =>{
+  onSubmit = (event) => {
     event.preventDefault();
-    this.props.onSubmit(this.state);
+    this.props.onSaveTask(this.state);
     // Cancel & close form
     this.onClear();
-    this.onCloseForm();
+    this.props.onCloseForm();
   }
 
   onClear = () => {
     this.setState({
-      namework: '',
-      statuswork: false
+      name: '',
+      status: false
     })
   }
 
   render() {
-    // let { namework, status } = this.state;
+    // let { name, status } = this.state;
+    if(!this.props.isDisplayForm) return null;  
     return (
       <Card>
         <CardHeader>{ this.state.id !== '' ? 'Chỉnh sửa công việc': 'Thêm công việc' }</CardHeader>
         <Form onSubmit={this.onSubmit}>
           <CardBody>
             <FormGroup>
-              <Label for="namework">Tên công việc:</Label>
+              <Label for="name">Tên công việc:</Label>
               <Input
                 type="text"
-                id="namework"
-                name="namework"
-                value={ this.state.namework  }
+                id="name"
+                name="name"
+                value={ this.state.name  }
                 onChange={this.onChangeForm}
               />
             </FormGroup>
             <FormGroup>
-              <Label for="statuswork">Trạng thái</Label>
+              <Label for="status">Trạng thái</Label>
               <Input
                 type="select"
-                id="statuswork"
-                name="statuswork"
-                value={ this.state.statuswork }
+                id="status"
+                name="status"
+                value={ this.state.status }
                 onChange={this.onChangeForm}
               >
                 <option value={true}>Kích hoạt</option>
@@ -114,4 +116,23 @@ class TaskForm extends Component {
   }
 }
 
-export default TaskForm;
+const mapStateToProps = (state) => {
+  return {
+    tasks: state.tasks,
+    isDisplayForm: state.isDisplayForm,
+    task: state.task
+  } 
+};// valiable props
+
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+      onSaveTask: (task) => {
+        dispatch(actions.saveTask(task));
+      },
+      onCloseForm: () => {
+        dispatch(actions.closeForm());
+      }
+  }
+}//action props
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskForm);

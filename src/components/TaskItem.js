@@ -3,25 +3,31 @@ import {
     Button, Badge
 } from 'reactstrap';
 
+import { connect } from 'react-redux';
+import * as actions from './../actions';
+
 
 class TaskItem extends Component {
-    editTask(id){
-        this.props.editTask(id);
+
+    editTask = () => {
+        this.props.onOpenForm();
+        this.props.onEditTask(this.props.task);
     }
 
-    onUpdateStatus(id) {
-        this.props.onUpdateStatus(id);
+    onUpdateStatus = () => {
+        this.props.onUpdateStatus(this.props.task.id);
     }
 
-    onDelete(id){
-        this.props.onDelete(id);
+    onDelete = () => {
+        this.props.onDeleteTask(this.props.task.id);
+        this.props.onCloseForm();
     }
     render() {
         let { index, task } = this.props;
         return (
             <tr>
                 <th scope="row">{ index + 1 }</th>
-                <td>{ task.namework }</td>
+                <td>{ task.name }</td>
                 <td>
                     <Badge 
                         color={task.status ? "success" : "danger"} 
@@ -40,4 +46,28 @@ class TaskItem extends Component {
     }
 }
 
-export default TaskItem;
+let mapStateToProps = (state) => {
+    return {};
+};
+
+let mapDispatchToProps = (dispatch, props) => {
+    return {
+        onUpdateStatus: (id) => {
+            dispatch(actions.updateStatus(id));
+        },
+        onDeleteTask: (id)=>{
+            dispatch(actions.deleteTask(id));
+        },
+        onCloseForm: () => {
+            dispatch(actions.closeForm());
+        },
+        onOpenForm: () => {
+            dispatch(actions.openForm());
+        },
+        onEditTask: (task) => {
+            dispatch(actions.editTask(task));
+        }
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(TaskItem);
